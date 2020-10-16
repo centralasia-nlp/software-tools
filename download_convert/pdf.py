@@ -197,10 +197,21 @@ def main(args=None):
 
 if __name__ == '__main__':
     pdf_obj = pdf2text()
-    input_directory = 'ziyonet/'
-    output_directory = 'txts/'
+    import sys
+    input_directory = sys.argv[1]
+    output_directory = sys.argv[2]
+    count = 0
+    count_errors = 0
     for filename in os.listdir(input_directory):
         if filename.endswith(".pdf"):
             name = filename.split('.')[0] + '.txt'
-            pdf_obj.extract_text(input_directory + filename, output_directory + name)
+            try:
+                pdf_obj.extract_text(input_directory + filename, output_directory + name)
+                count += 1
+                if count % 10 == 0:
+                    print(f"Processed {count} files")
+            except:
+                count_errors += 1
+
+    print("number of errors: " + str(count_errors))
     sys.exit()
